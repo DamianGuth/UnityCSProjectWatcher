@@ -12,7 +12,12 @@ Console.WriteLine("type 'exit' to exit the application.");
 while(true)
 {
     command = Console.ReadLine();
-    if(command == "exit")
+
+    if (command == "apply")
+    {
+        watcher.ApplyManually();
+    }
+    else if(command == "exit")
     {
         Console.WriteLine("Exiting...");
         Environment.Exit(0);

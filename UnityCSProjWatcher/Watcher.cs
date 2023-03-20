@@ -27,6 +27,11 @@ namespace UnityCSProjWatcher
             fsw.EnableRaisingEvents = true;
         }
 
+        public void ApplyManually()
+        {
+            ReadFileAndApplyRules(_projectDirectory.TrimEnd('/').TrimEnd('\\') + "/" + _assemblyCSharpName, new AssemblyCSharpRule());
+        }
+
         private void Fsw_Changed(object sender, FileSystemEventArgs e)
         {
             // Update the hash of the file.
