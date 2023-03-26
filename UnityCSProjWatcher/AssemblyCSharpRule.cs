@@ -8,7 +8,7 @@
             {
                 if(lines[i].Contains("<NoWarn>"))
                 {
-                    lines[i] = "<NoWarn>0169;S3903;IDE0090</NoWarn>";
+                    lines[i] = "    <NoWarn>0169;S3903;IDE0090</NoWarn>";
                 }
             }
         }

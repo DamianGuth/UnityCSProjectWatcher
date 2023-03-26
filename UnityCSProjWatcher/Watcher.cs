@@ -40,9 +40,41 @@ namespace UnityCSProjWatcher
 
         private static void ReadFileAndApplyRules(string path, IFileRule fileRule)
         {
-            string[] lines = File.ReadAllLines(path);
-            fileRule.ReplaceAllDataInLines(lines);
-            File.WriteAllLines(path, lines);
+            // Here we want to check if the file is locked and wait when it is locked.
+            int accesRequestCount = 0;
+
+            while (accesRequestCount < 10 && !TryAndApplyFileRules(path, fileRule))
+            {
+                // Increase request count.
+                accesRequestCount++;
+
+                if (accesRequestCount == 10)
+                {
+                    Console.WriteLine("Failed to access file after 10 tries.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to access file... retry in 500ms.");
+                    // Wait 500 ms.
+                    System.Threading.Thread.Sleep(500);
+                }
+            }
+        }
+
+        private static bool TryAndApplyFileRules(string path, IFileRule fileRule)
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
+                fileRule.ReplaceAllDataInLines(lines);
+                File.WriteAllLines(path, lines);
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
